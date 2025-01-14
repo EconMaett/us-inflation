@@ -1,11 +1,5 @@
 ---
-title: "us-inflation"
+title: "U.S. Inflation Dasbhoard"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+Quarto dashboard using [plotly](https://plotly.com/) to display the U.S. Consumer Price Index and related measures.

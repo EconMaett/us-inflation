@@ -1,0 +1,320 @@
+---
+format: dashboard
+editor: source
+---
+
+```{r}
+#| label: setup
+#| output: false
+
+library(plotly)
+library(dplyr)
+
+cpi_data <- readRDS(file = "data/cpi_data.rds")
+cpi_latest <- cpi_data[cpi_data$date == last(cpi_data$date), ]
+nber_rec_dates <- readRDS(file = "data/nber_rec_dates.rds")
+
+start_date <- "2005-01-01"
+
+hline <- function(y = 2, color = "#000814") {
+  list(
+    type = "line",
+    x0 = 0,
+    x1 = 1,
+    xref = "paper",
+    y0 = y,
+    y1 = y,
+    line = list(color = color, dash = "dot")
+  )
+}
+
+vline <- function(x = 0, color = "#000814") {
+  list(
+    type = "line",
+    y0 = 0,
+    y1 = 1,
+    yref = "paper",
+    x0 = x,
+    x1 = x,
+    line = list(color = color, dash = "dot")
+  )
+}
+```
+
+## Row {20%}
+
+```{r}
+#| content: valuebox
+#| title: "CPI Headline"
+list(
+  icon = "graph-up",
+  color = "primary",
+  value = round(cpi_latest$cpi_headline, 2)
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Sticky Prices Headline"
+
+list(
+  icon = "graph-up",
+  color = "info",
+  value = round(cpi_latest$sticky_cpi_headline, 2)
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "CPI Core"
+list(
+  icon = "activity",
+  color = "success",
+  value = round(cpi_latest$cpi_core, 2)
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Sticky Prices Core"
+
+list(
+  icon = "activity",
+  color = "light",
+  value = round(cpi_latest$sticky_cpi_core, 2)
+)
+```
+
+## Row {height="80%"}
+
+### Column {.tabset}
+
+```{r}
+#| title: "Headline Index"
+#| warning: false
+
+fig1 <- plot_ly(
+  data = cpi_data, 
+  type = "scatter", 
+  mode = "lines"
+)
+
+fig1 <- fig1 |> 
+  add_trace(
+    x = ~ date, 
+    y = ~ cpi_headline,
+    color = I("#004e98"),
+    name = "",
+    hovertemplate = "Standard: %{y}",
+    line = list(width = 4)
+)
+
+rec_list <- list()
+
+for (i in 1:nrow(nber_rec_dates)) {
+  
+  rec_list[[i]] <- list(
+    type = "rect",
+    fillcolor = "#7b2cbf",
+    line = list(color = "#7b2cbf"),
+    opacity = 0.3,
+    x0 = nber_rec_dates$start[i],
+    x1 = nber_rec_dates$end[i],
+    xref = "x",
+    y0 = -100,
+    y1 = 100,
+    yref = "y"
+  )
+
+}
+
+fig1 <- fig1 |> 
+  layout(shapes = rec_list)
+
+fig1 <- fig1 |> 
+  add_trace(
+    x = ~ date, 
+    y = ~ sticky_cpi_headline,
+    color = I("#4ea8de"),
+    name = "",
+    hovertemplate = "Sticky: %{y}",
+    line = list(width = 4)
+)
+
+fig1 <- fig1 |> 
+  layout(
+    showlegend = FALSE,
+    title = NULL,
+    xaxis = list(
+      title = "",
+      range = c(start_date, as.character(Sys.Date())),
+      rangeslider = list(visible = FALSE),
+      rangeselector = list(
+        buttons = list(
+          list(count = 10, label = "10y", step = "year", stepmode = "backward"),
+          list(count = 20, label = "20y", step = "year", stempode = "backward"),
+          list(count = 30, label = "30y", step = "year", stepmode = "backward"),
+          list(step = "all")
+        )
+      ),
+      tickformatstops = list(
+        list(dtickrange = list("M1", "M12"), value = "%b '%y M"),
+        list(dtickrange = list("M12", NULL), value = "%Y Y")
+      )
+    ),
+    yaxis = list(
+      title = "",
+      range = c(-3, 16),
+      hoverformat = ".2f"
+    )
+)
+
+fig1 <- fig1 |>
+  layout(
+    xaxis = list(
+      zerolinecolor = "#ced0ce",
+      zerolinewidth = 2,
+      gridcolor = "e6e8e6"
+    ),
+    yaxis = list(
+      zerolinecolor = "#ced0ce",
+      zerolinewidth = 2,
+      girdcolor = "e6e8e6"
+    ),
+    plot_bgcolor = "#ffffff"
+)
+
+fig1 <- fig1 |> 
+  layout(
+    hovermode = "x unified"
+)
+
+fig1 <- fig1 |> 
+  layout(
+    shapes = list(
+      hline(y = 2, color = "#e1e5f2")
+    )
+)
+
+fig1
+```
+
+::: {.card title="Definition"}
+Card text.
+:::
+
+### Column {.tabset}
+
+```{r}
+#| title: "Core Index"
+#| warning: false
+
+fig2 <- plot_ly(
+  data = cpi_data, 
+  type = "scatter", 
+  mode = "lines"
+)
+
+fig2 <- fig2 |> 
+  add_trace(
+    x = ~ date, 
+    y = ~ cpi_core,
+    color = I("#49a078"),
+    name = "",
+    hovertemplate = "Standard: %{y}",
+    line = list(width = 4)
+)
+
+rec_list <- list()
+
+for (i in 1:nrow(nber_rec_dates)) {
+  
+  rec_list[[i]] <- list(
+    type = "rect",
+    fillcolor = "#7b2cbf",
+    line = list(color = "#7b2cbf"),
+    opacity = 0.3,
+    x0 = nber_rec_dates$start[i],
+    x1 = nber_rec_dates$end[i],
+    xref = "x",
+    y0 = -100,
+    y1 = 100,
+    yref = "y"
+  )
+
+}
+
+fig2 <- fig2 |> 
+  layout(shapes = rec_list)
+
+fig2 <- fig2 |> 
+  add_trace(
+    x = ~ date, 
+    y = ~ sticky_cpi_core ,
+    color = I("#555b6e"),
+    name = "",
+    hovertemplate = "Sticky: %{y}",
+    line = list(width = 4)
+)
+
+fig2 <- fig2 |> 
+  layout(
+    showlegend = FALSE,
+    title = NULL,
+    xaxis = list(
+      title = "",
+      range = c(start_date, as.character(Sys.Date())),
+      rangeslider = list(visible = FALSE),
+      rangeselector = list(
+        buttons = list(
+          list(count = 10, label = "10y", step = "year", stepmode = "backward"),
+          list(count = 20, label = "20y", step = "year", stempode = "backward"),
+          list(count = 30, label = "30y", step = "year", stepmode = "backward"),
+          list(step = "all")
+        )
+      ),
+      tickformatstops = list(
+        list(dtickrange = list("M1", "M12"), value = "%b '%y M"),
+        list(dtickrange = list("M12", NULL), value = "%Y Y")
+      )
+    ),
+    yaxis = list(
+      title = "",
+      range = c(-3, 16),
+      hoverformat = ".2f"
+    )
+)
+
+fig2 <- fig2 |>
+  layout(
+    xaxis = list(
+      zerolinecolor = "#ced0ce",
+      zerolinewidth = 2,
+      gridcolor = "e6e8e6"
+    ),
+    yaxis = list(
+      zerolinecolor = "#ced0ce",
+      zerolinewidth = 2,
+      girdcolor = "e6e8e6"
+    ),
+    plot_bgcolor = "#ffffff"
+)
+
+fig2 <- fig2 |> 
+  layout(
+    hovermode = "x unified"
+)
+
+fig2 <- fig2 |> 
+  layout(
+    shapes = list(
+      hline(y = 2, color = "#e1e5f2")
+    )
+)
+
+fig2
+```
+
+::: {.card title="Definition"}
+Card text.
+:::

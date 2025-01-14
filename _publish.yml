@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: bed3721f-26fc-47c7-8cd2-fd8eb3ae9747
+      url: https://econmaett.quarto.pub/us-inflation-dashboard
