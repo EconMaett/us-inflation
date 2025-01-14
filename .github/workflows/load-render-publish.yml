@@ -33,7 +33,7 @@ jobs:
       
       - name: Import data
         run: Rscript -e 'source("import-data.R")'
-        env:
+        with:
           FRED_API_KEY: $${{ secrets.FRED_API_KEY }}
       
       - name: Render and Publish
