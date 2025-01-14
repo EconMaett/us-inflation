@@ -14,11 +14,11 @@ name: "Quarto Publish"
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    env:
+    FRED_API_KEY: $${{ secrets.FRED_API_KEY }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          FRED_API_KEY: $${{ secrets.FRED_API_KEY }}
         
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -35,7 +35,6 @@ jobs:
       
       - name: Import data
         run: Rscript -e 'source("import-data.R")'
-
       
       - name: Import Data Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
