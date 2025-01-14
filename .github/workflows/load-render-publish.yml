@@ -3,10 +3,11 @@ env:
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 9 15 * *"
   push:
     branches: main
+    
+  schedule:
+    - cron: "0 9 15 * *"
   
   name: "Quarto Publish"
     
