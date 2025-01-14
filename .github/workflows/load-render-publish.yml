@@ -35,7 +35,7 @@ jobs:
         run: Rscript -e 'source("import-data.R")'        
       
       - name: Render and Publish
-        uses: quarto-dev/quato/actions/publish@v2
+        uses: quarto-dev/quarto/actions/publish@v2
         with:
           target: quarto-pub
           QUARTO_PUB_AUTH_TOKEN: ${{ secrets.QUATO_PUB_AUTH_TOKEN }}
