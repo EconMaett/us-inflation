@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          FRED_API_KEY: $${{ secrets.FRED_API_KEY }}
         
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -30,12 +32,13 @@ jobs:
         run: |
           Rscript -e "install.packages('renv', repos = 'https://packagemanager.posit.co/cran/latest')"
           Rscript -e "renv::restore(repos = 'https://packagemanager.posit.co/cran/latest')"
-        
+      
+      - name: Import data
+        run: Rscript -e 'source("import-data.R")'
+
       
       - name: Import Data Render and Publish
-        run: Rscript -e 'source("import-data.R")'
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: quarto-pub
           QUARTO_PUB_AUTH_TOKEN: ${{ secrets.QUARTO_PUB_AUTH_TOKEN }}
-          FRED_API_KEY: $${{ secrets.FRED_API_KEY }}
