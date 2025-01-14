@@ -38,6 +38,7 @@ write_rds(nber_rec_dates, file = "data/nber_rec_dates.rds")
 ## Consumer Price Indices ----
 
 ### BLS ----
+
 # Consumer Price Index for All Urban Consumers: All Items in U.S. City Average (CPIAUCSL)
 #  Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average (CPILFESL)
 
