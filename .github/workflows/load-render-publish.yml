@@ -9,7 +9,7 @@ on:
   schedule:
     - cron: "0 9 15 * *"
   
-  name: "Quarto Publish"
+name: "Quarto Publish"
     
 jobs:
   build-deploy:
