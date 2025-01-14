@@ -38,7 +38,7 @@ jobs:
         env: 
           FRED_API_KEY: $${{ secrets.FRED_API_KEY }}
         run: |
-          Rscript load-data.R
+          Rscript import-data.R
       
       - name: Import Data Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
