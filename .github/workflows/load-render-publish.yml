@@ -32,7 +32,9 @@ jobs:
           Rscript -e "renv::restore(repos = 'https://packagemanager.posit.co/cran/latest')"
       
       - name: Import data
-        run: Rscript -e 'source("import-data.R")'        
+        run: Rscript -e 'source("import-data.R")'
+        env:
+          FRED_API_KEY: $${{ secrets.FRED_API_KEY }}
       
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2

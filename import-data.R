@@ -5,6 +5,10 @@ library(tidyr)
 library(purrr)
 library(readr)
 
+fred_api_key <- Sys.getenv("FRED_API_KEY")
+
+redr_set_key(fred_api_key)
+
 start_date <- as.Date("1950-01-01")
 
 ## NBER Recession Dates ----
