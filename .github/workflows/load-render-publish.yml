@@ -15,6 +15,7 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       FRED_API_KEY: $${{ secrets.FRED_API_KEY }}
     steps:
       - name: Check out repository
