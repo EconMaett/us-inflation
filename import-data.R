@@ -5,7 +5,7 @@ library(tidyr)
 library(purrr)
 library(readr)
 
-fredr_set_key(Sys.getenv("FRED_API_KEY"))
+fredr_set_key("c6111687930cefedd1119a2c7263fa3e")
 
 start_date <- as.Date("1950-01-01")
 
