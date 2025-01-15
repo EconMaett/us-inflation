@@ -1,4 +1,4 @@
-name: Run R Script to Fetch FRED Data with fredr
+name: Quarto Publish
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     branches: main
 
 jobs:
-  load_render_publish:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,12 +39,13 @@ jobs:
         run: |
           Rscript import-data.R
           
-      # Step 6: Render the Quarto file and publish to Quarto Pub
+      # Step 6: Render the Quarto file and publish to GitHub Pages
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
-          target: quarto-pub
-          QUARTO_PUB_AUTH_TOKEN: ${{ secrets.QUARTO_PUB_AUTH_TOKEN }}
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       # Step 7: Commit data files
       - name: Commit results
