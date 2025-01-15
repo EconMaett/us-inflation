@@ -5,6 +5,14 @@ on:
   push:
     branches: main
 
+  # Cron schedule to run on the 15th day of every month at 9:00 AM ET
+  schedule:
+    # 2:00 PM UTC is 9:00 AM ET (Eastern Standard Time)
+    - cron: '0 14 15 * *'
+
+env:
+  TZ: "Germany/Berlin"
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
