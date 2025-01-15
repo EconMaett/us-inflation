@@ -49,5 +49,3 @@ jobs:
           git add data/cpi_data.rds
           git commit -m 'Data updated' || echo "No changes to commit"
           git push origin || echo "No changes to commit"
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
