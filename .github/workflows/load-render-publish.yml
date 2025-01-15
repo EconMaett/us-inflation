@@ -32,3 +32,22 @@ jobs:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}  # Access the secret FRED API key
         run: |
           Rscript import-data.R
+          
+      # Step 5: Render the Quarto file and publish to Quarto Pub
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: quarto-pub
+          QUARTO_PUB_AUTH_TOKEN: ${{ secrets.QUARTO_PUB_AUTH_TOKEN }}
+          
+      # Step 6: Commit data files
+      - name: Commit results
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add data/nber_rec_dates.rds
+          git add data/cpi_data.rds
+          git commit -m 'Data updated' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
