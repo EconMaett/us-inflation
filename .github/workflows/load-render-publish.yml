@@ -1,9 +1,9 @@
 name: Run R Script to Fetch FRED Data with fredr
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: main
 
 jobs:
   load_render_publish:
