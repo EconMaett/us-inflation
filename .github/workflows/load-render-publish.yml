@@ -20,11 +20,11 @@ jobs:
         with:
           r-version: '4.x'  # Specify the version of R you need
 
-      # Step 3: Install dependencies (including 'fredr' package)
-      - name: Install dependencies
+      # Step 3: Install packages
+      - name: Install R packages
         run: |
-          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
-          Rscript -e "install.packages(c('fredr', 'tidyverse', 'plotly'))"
+          Rscript -e "install.packages('renv', repos = 'https://packagemanager.posit.co/cran/latest')"
+          Rscript -e "renv::restore(repos = 'https://packagemanager.posit.co/cran/latest')"
 
       # Step 4: Run the R script
       - name: Run R script to fetch data from FRED
